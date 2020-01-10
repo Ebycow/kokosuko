@@ -1,6 +1,6 @@
 
 module.exports = {
-  mode: 'universal',
+  mode: 'spa',
   /*
   ** Headers of the page
   */
@@ -28,6 +28,7 @@ module.exports = {
   ** Plugins to load before mounting the App
   */
   plugins: [
+    '~/plugins/vue-youtube-embed.js'
   ],
   /*
   ** Nuxt.js dev-modules
