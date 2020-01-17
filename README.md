@@ -2,6 +2,8 @@
 
 > suko
 
+kokosuko(ここすこ)はオープンソースの[ココスキ](https://twitter.com/cocosk_net)(現在は閉鎖)クローン実装を目的としたプロジェクトです
+
 ## Build Setup
 
 ``` bash
