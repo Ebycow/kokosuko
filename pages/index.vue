@@ -1,38 +1,14 @@
 <template>
   <div class="container-fluid">
     <div class="row">
-      <div class="col-md-8">
-
+      <div class="col-md-12">
+        
+        {{ nowPlaying.comment }}
         <div class="movie-wrap">
-          <youtube :video-id="videoId" :player-vars="playerVars" @ready="ready" @playing="playing"></youtube>
+          <youtube :video-id="nowPlaying.videoId" :player-vars="{ autoplay: 1 }" @ready="ready" @playing="playing"></youtube>
         </div>
 
-      </div>
-
-      <div class="col-md-4">
-        <div class="suko-card-margin">        
-          <a class="suko-card-link" href="">
-            <b-card  title="かわいそう" sub-title="220万の財布無くして、イジメられて、生きていく。【ヒカキン】">
-              <b-card-text></b-card-text>
-            </b-card>
-          </a>
-        </div>
-
-        <div class="suko-card-margin">        
-          <a class="suko-card-link" href="">
-            <b-card  title="かわいそう" sub-title="220万の財布無くして、イジメられて、生きていく。【ヒカキン】">
-              <b-card-text></b-card-text>
-            </b-card>
-          </a>
-        </div>
-
-        <div class="suko-card-margin">        
-          <a class="suko-card-link" href="">
-            <b-card  title="かわいそう" sub-title="220万の財布無くして、イジメられて、生きていく。【ヒカキン】">
-              <b-card-text></b-card-text>
-            </b-card>
-          </a>
-        </div>
+        <button v-on:click="changeVideo">change</button>
 
       </div>
 
@@ -44,11 +20,13 @@
 export default {
   data() {
     return {
-      videoId : "CGp1-4EovDk",
-      playerVars : {
-        // start: 10,
-        autoplay: 0
+      nowPlaying:{
+        videoId : "CGp1-4EovDk",
+        comment : "ここすき",
+        start : 5,
+        end : 20
       }
+
     }
   },
 
@@ -56,12 +34,41 @@ export default {
       ready (event) {
         this.player = event.target;
 
-        // setInterval(() => {
-        //   this.player.seekTo(100, true);
-        // }, 5000)
+        // ループ処理　再生時間を舐めて終了時間になったらシークバーを戻す
+        setInterval(() => {
+          if (this.player.getCurrentTime() >= this.nowPlaying.end) {
+            this.player.seekTo(this.nowPlaying.start, true);
+          }
+        }, 100)
 
-        // this.player.seekTo(100, true);
-      }
+      },
+
+      playing() {
+        console.log(this.player.getCurrentTime())
+
+        // 初回のみシークバー移動（指定しないと無限ループする）
+        // この方法ではユーザ手動でシークバー変更が出来ない
+        if (this.player.getCurrentTime() < 1) {
+          this.player.seekTo(this.nowPlaying.start, true);
+        }
+        console.log("playing")
+
+      },
+
+
+      // 動画変更のサンプル
+      changeVideo() {
+        this.nowPlaying = {
+          videoId : "_a9gUjJY-f4",
+          comment : "これすき",
+          start : 30,
+          end : 40
+        }
+
+      },
+
+
+
   }
 
 }
@@ -83,11 +90,4 @@ export default {
       height: 100%;
   }
 
-  .suko-card-link {
-    text-decoration:none;
-  }
-
-  .suko-card-margin {
-    margin-bottom: 10px;
-  }
 </style>
